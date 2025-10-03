@@ -9,7 +9,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy import String, Text, or_,func,desc
 from datetime import date,timedelta
 from python.services.system.printer import *
-
+import os
 
 ordenes_de_venta_bp = Blueprint("ordenes_de_venta", __name__,url_prefix="/ordenes_de_venta")
 
@@ -18,7 +18,7 @@ ordenes_de_venta_bp = Blueprint("ordenes_de_venta", __name__,url_prefix="/ordene
 def ov_print_ticket(id):
     orden = OrdenesDeVenta.query.get(id)
     canal_de_venta = CanalesDeVenta.query.get(orden.id_canal_de_venta).nombre
-    sucursal=Sucursales.query.get(session['id_sucursal'])
+    sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
     # Correct filter
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
 
@@ -52,7 +52,7 @@ def ov_print_ticket(id):
 @ordenes_de_venta_bp.route("/print_ticket_kitchen/<uuid:id>", methods=["GET"])
 def ov_print_ticket_kitchen(id):
     record = OrdenesDeVenta.query.get(id)
-    sucursal=Sucursales.query.get(session['id_sucursal'])
+    sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
     canal_de_venta = CanalesDeVenta.query.get(record.id_canal_de_venta).nombre
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
     items = []
