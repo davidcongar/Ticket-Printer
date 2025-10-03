@@ -19,10 +19,7 @@ def ov_print_ticket(id):
     orden = OrdenesDeVenta.query.get(id)
     canal_de_venta = CanalesDeVenta.query.get(orden.id_canal_de_venta).nombre
     sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
-    # Correct filter
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
-
-    # Build items list
     items = []
     for p in productos:
         nombre_prod=Menu.query.get(p.id_menu).nombre
@@ -36,7 +33,7 @@ def ov_print_ticket(id):
     # Build payload for the printer
     payload = {
         "restaurant": sucursal.nombre,
-        "restaurant": sucursal.direccion,
+        "address": sucursal.direccion,
         "sale_channel": canal_de_venta,
         "total": str(round(orden.importe_total,2)),
         "discount": str(round(orden.descuentos,2)),
