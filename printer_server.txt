@@ -1,0 +1,26 @@
+sudo nano /etc/systemd/system/restaurantcloud.service
+
+-------------------------
+
+[Unit]
+Description=Flask Printer API
+After=network.target
+
+[Service]
+ExecStart=/home/restaurant-cloud/posenv/bin/python /home/restaurant-cloud/Restaurant-Cloud-main/app.py
+WorkingDirectory=/home/restaurant-cloud/Restaurant-Cloud-main/
+Restart=always
+User=restaurant-cloud
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
+
+-------------------------
+
+sudo systemctl daemon-reload
+sudo systemctl enable restaurantcloud.service
+sudo systemctl start restaurantcloud.service
+sudo systemctl status restaurantcloud.service
+
+

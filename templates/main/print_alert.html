@@ -1,0 +1,17 @@
+{% extends './partials/system/layout2.html' %}
+{% block content %}
+
+<div class="bg-white dark:bg-dark text-dark dark:text-white bg-[url('../images/autho-light-bg.png')] dark:bg-[url('../images/autho-dark-bg.png')] bg-fixed bg-cover bg-center min-h-screen">
+	<!-- Start Content -->
+	<div class="relative">
+		<div class="min-h-[calc(100vh-192px)] p-7 flex justify-center items-center">
+			<div
+				class="sm:p-[60px] p-9 border-2 border-gray/10 dark:border-gray/20 bg-white/10 dark:bg-white/[0.02] backdrop-blur-3xl max-w-[620px] mx-auto rounded-lg w-full">
+				<p class="text-3xl font-semibold">{{message}}</p>
+			</div>
+		</div>
+	</div>
+	<!-- End Content -->
+</div>
+
+{% endblock content %}
