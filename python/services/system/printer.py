@@ -31,6 +31,7 @@ def print_ticket(data):
     padding = 2       # extra right margin
     for item in order_items:
         name = item.get("name", "")
+        notes=item.get("notes", "")
         qty = item.get("qty", 1)
         line_total = item.get("line_total", 0.0)
 
@@ -41,6 +42,8 @@ def print_ticket(data):
         # Pad so right_text stays away from edge
         line = f"{left_text:<{line_width - len(right_text) - padding}}{right_text}\n"
         printer.text(line)
+        if notes:
+                printer.text(f"   ↳ {notes}\n")         
 
     printer.text("--------------------------------\n")
 
@@ -84,6 +87,7 @@ def print_ticket_kitchen(data):
 
     for item in order_items:
         name = item.get("name", "")
+        notes=item.get("notes", "")
         qty = item.get("qty", 1)
 
         # Left part = qty and name
@@ -92,6 +96,8 @@ def print_ticket_kitchen(data):
         # Pad so right_text stays away from edge
         line = f"{left_text:<{line_width - padding}}\n"
         printer.text(line)
+        if notes:
+                printer.text(f"   ↳ {notes}\n")        
 
     printer.text("--------------------------------\n")
 
