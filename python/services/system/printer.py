@@ -60,8 +60,8 @@ def print_ticket(data):
 
     # Footer
     printer.set(align="center", bold=True)
-    printer.text("¡Gracias!\n")
-    printer.text("¡Los Esperamos Pronto!\n\n\n")
+    printer.text("Gracias!\n")
+    printer.text("Los Esperamos Pronto!\n\n\n")
     if online_url!='':
         printer.text("Para pedidos en linea\n")
         printer.text("escanea el siguiente codigo QR.\n")
