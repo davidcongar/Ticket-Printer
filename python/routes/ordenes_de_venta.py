@@ -30,6 +30,15 @@ def ov_print_ticket(id):
             "price": str(round(p.precio_unitario,2)),
             "line_total":str(round(p.cantidad*p.precio_unitario,2))
         })
+        adicionales=ComplementosEnOrdenesDeVentas.query.filter(id_producto_en_orden_de_venta=p.id).all()
+        for adicional in adicionales:
+            items.append({
+                "name": adicional.complemento_de_menu.nombre,
+                "notes": '',
+                "qty": str(round(adicional.cantidad,0)),
+                "price": str(round(adicional.precio_unitario,2)),
+                "line_total":str(round(adicional.cantidad*adicional.precio_unitario,2))
+            })
 
     # Build payload for the printer
     payload = {
@@ -61,6 +70,15 @@ def ov_print_ticket_kitchen(id):
             "notes": f'{p.notas + "," if p.notas else ""}{p.modificaciones}',
             "qty": str(round(p.cantidad,0))
         })
+        adicionales=ComplementosEnOrdenesDeVentas.query.filter(id_producto_en_orden_de_venta=p.id).all()
+        for adicional in adicionales:
+            items.append({
+                "name": adicional.complemento_de_menu.nombre,
+                "notes": '',
+                "qty": str(round(adicional.cantidad,0)),
+                "price": str(round(adicional.precio_unitario,2)),
+                "line_total":str(round(adicional.cantidad*adicional.precio_unitario,2))
+            })        
 
     # Build payload for the printer
     payload = {

@@ -43,7 +43,7 @@ def print_ticket(data):
         line = f"{left_text:<{line_width - len(right_text) - padding}}{right_text}\n"
         printer.text(line)
         if notes:
-                printer.text(f"   ↳ {notes}\n")         
+                printer.text(f" {notes}\n")         
 
     printer.text("--------------------------------\n")
 
@@ -97,7 +97,7 @@ def print_ticket_kitchen(data):
         line = f"{left_text:<{line_width - padding}}\n"
         printer.text(line)
         if notes:
-                printer.text(f"   ↳ {notes}\n")        
+                printer.text(f" {notes}\n")        
 
     printer.text("--------------------------------\n")
 
