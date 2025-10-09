@@ -23,9 +23,13 @@ def ov_print_ticket(id):
     items = []
     for p in productos:
         nombre_prod=Menu.query.get(p.id_menu).nombre
+        notas=p.notas + "," if p.notas else ""
+        mods=p.modificaciones.strip("{}").replace('"', '') if p.modificaciones else ""
+        mods = {x.strip() for x in mods.split(",")}
+        mods = ",".join(sorted(mods))
         items.append({
             "name": nombre_prod,
-            "notes": f'{p.notas + "," if p.notas else ""}{",".join(p.modificaciones)}',
+            "notes": f'{notas}{mods}',
             "qty": str(round(p.cantidad,0)),
             "price": str(round(p.precio_unitario,2)),
             "line_total":str(round(p.cantidad*p.precio_unitario,2))
@@ -65,9 +69,13 @@ def ov_print_ticket_kitchen(id):
     items = []
     for p in productos:
         nombre_prod=Menu.query.get(p.id_menu).nombre
+        notas=p.notas + "," if p.notas else ""
+        mods=p.modificaciones.strip("{}").replace('"', '') if p.modificaciones else ""
+        mods = {x.strip() for x in mods.split(",")}
+        mods = ",".join(sorted(mods))
         items.append({
             "name": nombre_prod,
-            "notes": f'{p.notas + "," if p.notas else ""}{",".join(p.modificaciones)}',
+            "notes": f'{notas}{mods}',
             "qty": str(round(p.cantidad,0))
         })
         adicionales=ComplementosEnOrdenesDeVentas.query.filter_by(id_producto_en_orden_de_venta=p.id).all()
