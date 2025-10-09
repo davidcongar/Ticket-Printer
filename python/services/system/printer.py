@@ -49,7 +49,7 @@ def print_ticket(data):
 
     # Totals (also padded to leave margin)
     printer.text(f"{'Descuento:':<{line_width - 10 - padding}}${float(discount):.2f}\n")
-    printer.text(f"{'TOTAL:':<{line_width - 10 - padding}}${float(total):.2f}\n")
+    printer.text(f"{'TOTAL CON IVA:':<{line_width - 10 - padding}}${float(total):.2f}\n")
     printer.text("--------------------------------\n")
 
     # Footer
@@ -82,8 +82,8 @@ def print_ticket_kitchen(data):
     
     # Print order items
     printer.set(bold=True, width=3, height=3)
-    line_width = 42  
-    padding = 2 
+    line_width = 42
+    padding = 2
 
     for item in order_items:
         name = item.get("name", "")
