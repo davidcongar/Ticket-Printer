@@ -25,7 +25,7 @@ def ov_print_ticket(id):
         nombre_prod=Menu.query.get(p.id_menu).nombre
         items.append({
             "name": nombre_prod,
-            "notes": f'{p.notas + "," if p.notas else ""}{p.modificaciones}',
+            "notes": f'{p.notas + "," if p.notas else ""}{",".join(p.modificaciones)}',
             "qty": str(round(p.cantidad,0)),
             "price": str(round(p.precio_unitario,2)),
             "line_total":str(round(p.cantidad*p.precio_unitario,2))
@@ -67,7 +67,7 @@ def ov_print_ticket_kitchen(id):
         nombre_prod=Menu.query.get(p.id_menu).nombre
         items.append({
             "name": nombre_prod,
-            "notes": f'{p.notas + "," if p.notas else ""}{p.modificaciones}',
+            "notes": f'{p.notas + "," if p.notas else ""}{",".join(p.modificaciones)}',
             "qty": str(round(p.cantidad,0))
         })
         adicionales=ComplementosEnOrdenesDeVentas.query.filter(id_producto_en_orden_de_venta=p.id).all()
