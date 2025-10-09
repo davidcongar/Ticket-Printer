@@ -19,6 +19,7 @@ def ov_print_ticket(id):
     orden = OrdenesDeVenta.query.get(id)
     canal_de_venta = CanalesDeVenta.query.get(orden.id_canal_de_venta).nombre
     sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
+    empresa=Empresas.query.get(sucursal.id_empresa)
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
     items = []
     for p in productos:
@@ -52,7 +53,8 @@ def ov_print_ticket(id):
         "sale_channel": canal_de_venta,
         "total": str(round(orden.importe_total,2)),
         "discount": str(round(orden.descuentos,2)),
-        "items": items
+        "items": items,
+        "online_url":f'snappkitchen.snappsolutions.com/{sucursal.id_empresa}' if empresa.is_pedidos_en_linea==True else None,
     }
     try:
         print_ticket(payload)

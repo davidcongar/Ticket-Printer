@@ -1,5 +1,8 @@
 from escpos.printer import Usb
 from datetime import datetime
+import qrcode
+import io
+import base64
 
 def print_ticket(data):
     VENDOR_ID = 0x0483
@@ -13,6 +16,7 @@ def print_ticket(data):
     discount = data.get("discount", 0.0)
     total = data.get("total", 0.0)
     canal_de_venta = data.get("sale_channel", "")
+    online_url = data.get("online_url", "")
 
     # Start printing
     printer.set(align="center", bold=True, width=2, height=2)
@@ -58,6 +62,11 @@ def print_ticket(data):
     printer.set(align="center", bold=True)
     printer.text("Gracias!\n")
     printer.text("Los Esperamos Pronto!\n\n\n")
+    if online_url!='':
+        printer.text("Para pedidos en línea escanea el siguiente código QR!\n")
+        printer.qr(online_url, size=8)
+ 
+    # Render template
     printer.cut()
     printer.close()
 
