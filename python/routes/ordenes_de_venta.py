@@ -48,6 +48,7 @@ def ov_print_ticket(id):
     payload = {
         "restaurant": sucursal.nombre,
         "address": sucursal.direccion,
+        "phone_number":sucursal.telefono,
         "sale_channel": canal_de_venta,
         "total": str(round(orden.importe_total,2)),
         "discount": str(round(orden.descuentos,2)),
