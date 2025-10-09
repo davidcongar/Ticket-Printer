@@ -54,7 +54,7 @@ def ov_print_ticket(id):
         "total": str(round(orden.importe_total,2)),
         "discount": str(round(orden.descuentos,2)),
         "items": items,
-        "online_url":f'snappkitchen.snappsolutions.com/{sucursal.id_empresa}' if empresa.is_pedidos_en_linea==True else None,
+        "online_url":f'snappkitchen.snappsolutions.com/pedidos_en_linea/{sucursal.id_empresa}' if empresa.is_pedidos_en_linea==True else None,
     }
     try:
         print_ticket(payload)
