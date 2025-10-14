@@ -17,6 +17,8 @@ def print_ticket(data):
     total = data.get("total", 0.0)
     canal_de_venta = data.get("sale_channel", "")
     online_url = data.get("online_url", "")
+    client_name= data.get("client_name", "")
+    client_phone_number=data.get("client_phone_number", "")
 
     # Start printing
     printer.set(align="center", bold=True, width=2, height=2)
@@ -28,6 +30,9 @@ def print_ticket(data):
     printer.text("--------------------------------\n")
     printer.set(align="left", bold=True)
     printer.text(f"Canal de venta: {canal_de_venta}\n")
+    if client_name!='':
+        printer.text(f"Cliente: {client_name}\n")
+        printer.text(f"Numero de cliente: {client_phone_number}\n")
     printer.text("--------------------------------\n")
     
     # Print order items
@@ -80,6 +85,8 @@ def print_ticket_kitchen(data):
     order_items = data.get("items", [])
     canal_de_venta = data.get("sale_channel", "")
     hour_sent = data.get("hour_sent", "")
+    client_name= data.get("client_name", "")
+    client_phone_number=data.get("client_phone_number", "")    
 
     # Start printing
     printer.set(align="center", bold=True, width=2, height=2)
@@ -90,6 +97,9 @@ def print_ticket_kitchen(data):
     printer.set(align="left", bold=True)
     printer.text(f"Canal de venta: {canal_de_venta}\n")
     printer.text(f"Hora: {hour_sent}\n")
+    if client_name!='':
+        printer.text(f"Cliente: {client_name}\n")
+        printer.text(f"Numero de cliente: {client_phone_number}\n")    
     printer.text("--------------------------------\n")
     
     # Print order items

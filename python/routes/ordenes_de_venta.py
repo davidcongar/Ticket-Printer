@@ -20,6 +20,7 @@ def ov_print_ticket(id):
     canal_de_venta = CanalesDeVenta.query.get(orden.id_canal_de_venta).nombre
     sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
     empresa=Empresas.query.get(sucursal.id_empresa)
+    cliente=Clientes.query.get(orden.id_cliente)
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
     items = []
     for p in productos:
@@ -48,6 +49,8 @@ def ov_print_ticket(id):
     # Build payload for the printer
     payload = {
         "restaurant": sucursal.nombre,
+        "client_name":cliente.nombre if cliente else None,
+        "client_phone_number":cliente.telefono if cliente else None,
         "address": sucursal.direccion,
         "phone_number":sucursal.telefono,
         "sale_channel": canal_de_venta,
@@ -66,6 +69,7 @@ def ov_print_ticket(id):
 @ordenes_de_venta_bp.route("/print_ticket_kitchen/<uuid:id>", methods=["GET"])
 def ov_print_ticket_kitchen(id):
     record = OrdenesDeVenta.query.get(id)
+    cliente=Clientes.query.get(record.id_cliente)
     sucursal=Sucursales.query.get(os.getenv('ID_SUCURSAL'))
     canal_de_venta = CanalesDeVenta.query.get(record.id_canal_de_venta).nombre
     productos = ProductosEnOrdenesDeVentas.query.filter_by(id_orden_de_venta=id).all()
@@ -94,6 +98,8 @@ def ov_print_ticket_kitchen(id):
     # Build payload for the printer
     payload = {
         "restaurant": sucursal.nombre,
+        "client_name":cliente.nombre if cliente else None,
+        "client_phone_number":cliente.telefono if cliente else None,        
         "sale_channel": canal_de_venta,
         "hour_sent":datetime.now(),
         "items": items
