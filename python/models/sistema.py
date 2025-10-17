@@ -6,6 +6,16 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from python.models import db
 from sqlalchemy.orm import validates
 from decimal import Decimal
+from sqlalchemy.types import TypeDecorator, String
+from cryptography.fernet import Fernet
+import os
+from dotenv import load_dotenv 
+
+load_dotenv()
+
+# Load your key securely (from env, Parameter Store, or Secrets Manager)
+FERNET_KEY = os.environ["ENCRYPTION_KEY"]
+fernet = Fernet(FERNET_KEY)
 
 class BaseMixin:
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -16,6 +26,27 @@ class BaseMixin:
 class AuditMixin:
     id_usuario = db.Column(db.UUID, nullable=True)
     id_empresa = db.Column(db.UUID, nullable=True)
+
+class EncryptedColumn(TypeDecorator):
+    impl = String
+
+    def process_bind_param(self, value, dialect):
+        """Called before saving to the DB"""
+        if value is None:
+            return value
+        if not isinstance(value, str):
+            value = str(value)
+        return fernet.encrypt(value.encode()).decode()
+
+    def process_result_value(self, value, dialect):
+        """Called after reading from the DB"""
+        if value is None:
+            return value
+        try:
+            return fernet.decrypt(value.encode()).decode()
+        except Exception:
+            # Handle old unencrypted values gracefully
+            return value
 
 class Empresas(db.Model,BaseMixin):
     __tablename__ = "empresas"
