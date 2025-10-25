@@ -25,6 +25,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 280  # seconds, under 5 min
+app.config["SQLALCHEMY_POOL_PRE_PING"] = True
 
 # Configuración de la sesión
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(weeks=1)
