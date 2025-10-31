@@ -25,8 +25,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 280  # seconds, under 5 min
-app.config["SQLALCHEMY_POOL_PRE_PING"] = True
 
 # Configuración de la sesión
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(weeks=1)
@@ -40,12 +38,33 @@ def make_session_permanent():
 
 
 # Configuración de Base de Datos
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+app.config.update(
+    SQLALCHEMY_DATABASE_URI=(
+        f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
+        f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+    ),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    SQLALCHEMY_ENGINE_OPTIONS={
+        "pool_size": 5,
+        "pool_recycle": 280,
+        "pool_pre_ping": True,
+        "pool_timeout": 30,
+        "max_overflow": 10,
+    },
 )
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+from sqlalchemy import event
+from sqlalchemy.exc import DisconnectionError
+
+@event.listens_for(db.engine, "engine_connect")
+def ping_connection(connection, branch):
+    if branch:
+        return
+    try:
+        connection.scalar("SELECT 1")
+    except DisconnectionError:
+        connection.invalidate()
+        connection.scalar("SELECT 1")
 
 # Inicializar extensiones
 db.init_app(app)
@@ -57,4 +76,4 @@ app.register_blueprint(ordenes_de_venta_bp)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="localhost", port=8000, debug=False)
