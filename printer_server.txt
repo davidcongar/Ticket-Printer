@@ -1,4 +1,4 @@
-sudo nano /etc/systemd/system/ticketprinter.service
+asudo nano /etc/systemd/system/ticketprinter.service
 
 -------------------------
 
