@@ -1,4 +1,4 @@
-sudo nano /etc/systemd/system/ticket_printer.service
+sudo nano /etc/systemd/system/ticketprinter.service
 
 -------------------------
 
@@ -24,8 +24,8 @@ WantedBy=multi-user.target
 -------------------------
 
 sudo systemctl daemon-reload
-sudo systemctl enable restaurantcloud.service
-sudo systemctl start restaurantcloud.service
-sudo systemctl status restaurantcloud.service
+sudo systemctl enable ticketprinter.service
+sudo systemctl start ticketprinter.service
+sudo systemctl status ticketprinter.service
 
 
